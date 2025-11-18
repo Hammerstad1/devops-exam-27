@@ -1,0 +1,15 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+.aws-sam/
+.build/
+
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+EOF
+
+

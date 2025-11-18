@@ -1,29 +1,57 @@
 name: Deploy SAM Application
 
 on:
+  pull_request:
+    paths:
+      - "sam-comprehend/**"
+
   push:
     branches:
       - main
     paths:
-      - 'sam-comprehend/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'sam-comprehend/**'
+      - "sam-comprehend/**"
 
 jobs:
-  deploy:
+  validate-build:
+    name: Validate & Build
     runs-on: ubuntu-latest
+
+    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
+
+      - name: Install SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: SAM Validate
+        working-directory: sam-comprehend
+        run: sam validate
+
+      - name: SAM Build
+        working-directory: sam-comprehend
+        run: sam build --use-container
+
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
       - name: Set up SAM CLI
         uses: aws-actions/setup-sam@v2
@@ -35,10 +63,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
+      - name: SAM Validate
+        working-directory: sam-comprehend
+        run: sam validate
+
+      - name: SAM Build
+        working-directory: sam-comprehend
+        run: sam build --use-container
+
       - name: Deploy SAM application
-        working-directory: ./sam-comprehend
+        working-directory: sam-comprehend
         run: |
           sam deploy \
-            --stack-name aialpha-sentiment-glennbech \
+            --stack-name sam-app-kandidat-27 \
+            --capabilities CAPABILITY_IAM \
+            --region eu-west-1 \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
