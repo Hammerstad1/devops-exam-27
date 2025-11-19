@@ -77,8 +77,29 @@ Så jeg brukte heller isteden:
 ### Del B - Fiks Github Actions workflow
 
 ### Leveranser
+ - workflow-fil: https://github.com/Hammerstad1/devops-exam-27/blob/main/.github/workflows/sam-deploy.yml
+ - Successful deploy: https://github.com/Hammerstad1/devops-exam-27/actions/runs/19489519691/job/55778870846
+ - PR validation: https://github.com/Hammerstad1/devops-exam-27/actions/runs/19487543875/job/55772856889
 
+### Instruksjoner til sensor:
 
+1. **Fork repositoriet**
+2. **Legg til GitHub secrets**
+3. **Endre bucket navn:** Endre bucket navn i sam-comprehend/template.yaml til din egen
+4. **Test workflowen:** Opprett en pull request til main, her tar workflow å kjører automatisk `sam validate` og `sam build`.
+Deretter merge til main, hvor workflowen blir deployet automatisk til AWS via `sam deploy`
 
+   
+# Oppgave 3 - Container og Docker
+
+### Del A - Containeriser Spring Boot-applikasjonen
+
+### Leveranser
+
+Docker fil: `sentiment-docker/Dockerfile`
+
+### Del B - Github Actions workflow for Docker Hub
+
+### Leveranser
 
 
