@@ -31,9 +31,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./sentiment-docker
-
           file: ./sentiment-docker/Dockerfile
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:latest
-            ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:sha-${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:latest, ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}
