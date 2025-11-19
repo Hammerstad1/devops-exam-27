@@ -34,8 +34,8 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           echo "Building for user: $DOCKER_USER"
-          docker build -t $DOCKER_USER/sentiment-docker:latest \
-                       -t $DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }} \
+          docker build -t "$DOCKER_USER/sentiment-docker:latest" \
+                       -t "$DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}" \
                        -f ./sentiment-docker/Dockerfile \
                        ./sentiment-docker
 
@@ -43,5 +43,5 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker push $DOCKER_USER/sentiment-docker:latest
-          docker push $DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}
+          docker push "$DOCKER_USER/sentiment-docker:latest"
+          docker push "$DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}"
