@@ -74,9 +74,14 @@ Så jeg brukte heller isteden:
  - **S3 objekt:**
     `"s3://kandidat-27-data/midlertidig/comprehend-20251118-085214-6c32287c.json"`
 
-### Del B - Fiks Github Actions workflow
+### Del B - Fiks GitHub Actions workflow
 
 ### Leveranser
+
+ - Workflow-fil: `https://github.com/Hammerstad1/devops-exam-27/blob/main/.github/workflows/sam-deploy.yml`
+ - Successful deploy: `https://github.com/Hammerstad1/devops-exam-27/actions/runs/19483682348`
+ - PR validation: 
+ - Instruksjoner til sensor: 
 
 
 
