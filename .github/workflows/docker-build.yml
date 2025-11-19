@@ -27,10 +27,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
+      - name: Get short SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./sentiment-docker
           file: ./sentiment-docker/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:latest, ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:latest,${{ secrets.DOCKER_USERNAME }}/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}
