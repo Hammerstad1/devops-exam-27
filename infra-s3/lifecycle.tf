@@ -2,7 +2,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "analysis_lifecycle" {
   bucket = aws_s3_bucket.analysis.id
 
   rule {
-    id = "temporary-files-lifecycle"
+    id     = "temporary-files-lifecycle"
     status = "Enabled"
 
     filter {
@@ -10,7 +10,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "analysis_lifecycle" {
     }
 
     transition {
-      days = var.transition_days
+      days          = var.transition_days
       storage_class = "GLACIER"
     }
 
