@@ -34,8 +34,15 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Terraform init
+        if: github.event_name == 'pull_request'
+        working-directory: infra-s3
+        run: terraform init -input=false -backend=false
+
+      - name: Terraform init
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: infra-s3
         run: terraform init -input=false
+
 
       - name: Terraform Format Check
         working-directory: infra-s3
