@@ -28,6 +28,11 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Set up Docker to use legacy builder
+        run: |
+          docker buildx create --use --name legacy-builder --drive docker || true
+          docker buildx use default
+
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/sentiment-docker:latest \
