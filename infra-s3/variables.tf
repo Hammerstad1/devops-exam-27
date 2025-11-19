@@ -1,9 +1,13 @@
-variable "aws_region" {
-
-}
 variable "bucket_name" {
-  description = "kandidat-27-data"
+  description = "Name of the S3 bucket"
   type        = string
+  default = "kandidat-27-data"
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  type = string
+  default = "eu-west-1"
 }
 
 variable "temp_prefix" {
