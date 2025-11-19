@@ -28,15 +28,16 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Set Docker username
+        id: docker
+        run: echo "username=${{ secrets.DOCKER_USERNAME }}" >> $GITHUB_OUTPUT
+
       - name: Build Docker image
         env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_BUILDKIT: 1
-        run: docker build -t "$DOCKER_USER/sentiment-docker:latest" -t "$DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}" -f ./sentiment-docker/Dockerfile ./sentiment-docker
+        run: docker build -t "${{ steps.docker.outputs.username }}/sentiment-docker:latest" -t "${{ steps.docker.outputs.username }}/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}" -f ./sentiment-docker/Dockerfile ./sentiment-docker
 
       - name: Push Docker image
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker push "$DOCKER_USER/sentiment-docker:latest"
-          docker push "$DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}"
+          docker push "${{ steps.docker.outputs.username }}/sentiment-docker:latest"
+          docker push "${{ steps.docker.outputs.username }}/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}"
