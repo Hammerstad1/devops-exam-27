@@ -31,6 +31,7 @@ jobs:
       - name: Build Docker image
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_BUILDKIT: 1
         run: |
           echo "Building for user: $DOCKER_USER"
           docker build -t $DOCKER_USER/sentiment-docker:latest \
