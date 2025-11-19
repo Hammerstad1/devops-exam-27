@@ -14,10 +14,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    env:
-      DOCKER_BUILDKIT: 0
-      DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,12 +29,18 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build Docker image
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
+          echo "Building for user: $DOCKER_USER"
           docker build -t $DOCKER_USER/sentiment-docker:latest \
                        -t $DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }} \
                        -f ./sentiment-docker/Dockerfile \
                        ./sentiment-docker
+
       - name: Push Docker image
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
           docker push $DOCKER_USER/sentiment-docker:latest
           docker push $DOCKER_USER/sentiment-docker:sha-${{ steps.vars.outputs.sha_short }}
