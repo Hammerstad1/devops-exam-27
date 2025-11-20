@@ -2,7 +2,12 @@ package com.aialpha.sentiment.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.Gauge;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class SentimentMetrics {
