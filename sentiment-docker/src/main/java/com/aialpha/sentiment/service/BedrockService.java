@@ -72,7 +72,7 @@ public class BedrockService {
         } catch (Exception e) {
             long duration = System.currentTimeMillis() - startTime;
             sentimentMetrics.recordDuration(duration, "ERROR", MODEL_ID);
-            sentimentMetrics.recordComapniesDetected(0);
+            sentimentMetrics.recordCompaniesDetected(0);
             throw new RuntimeException("Failed to analyze sentiment with Bedrock: " + e.getMessage(), e);
         }
     }
