@@ -1,5 +1,6 @@
 package com.aialpha.sentiment.service;
 
+import com.aialpha.sentiment.metrics.SentimentMetrics;
 import com.aialpha.sentiment.model.CompanySentiment;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,15 +18,19 @@ public class BedrockService {
 
     private final BedrockRuntimeClient bedrockClient;
     private final ObjectMapper objectMapper;
+    private final SentimentMetrics sentimentMetrics;
 
     private static final String MODEL_ID = "amazon.nova-micro-v1:0";
 
-    public BedrockService(BedrockRuntimeClient bedrockClient, ObjectMapper objectMapper) {
+    public BedrockService(BedrockRuntimeClient bedrockClient, ObjectMapper objectMapper, SentimentMetrics sentimentMetrics) {
         this.bedrockClient = bedrockClient;
         this.objectMapper = objectMapper;
+        this.sentimentMetrics = sentimentMetrics;
     }
 
     public List<CompanySentiment> analyzeSentiment(String text) {
+        long startTime = System.currentTimeMillis();
+
         try {
             // Build the prompt for Nova
             String prompt = buildSentimentPrompt(text);
@@ -65,6 +70,9 @@ public class BedrockService {
             return parseNovaResponse(responseBody);
 
         } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            sentimentMetrics.recordDuration(duration, "ERROR", MODEL_ID);
+            sentimentMetrics.recordComapniesDetected(0);
             throw new RuntimeException("Failed to analyze sentiment with Bedrock: " + e.getMessage(), e);
         }
     }

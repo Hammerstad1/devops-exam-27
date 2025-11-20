@@ -102,4 +102,35 @@ Docker fil: `sentiment-docker/Dockerfile`
 
 ### Leveranser
 
+Workflow-fil: `https://github.com/Hammerstad1/devops-exam-27/blob/main/.github/workflows/docker-build.yml`
+Successful build: `https://github.com/Hammerstad1/devops-exam-27/actions/runs/19494820526/job/55794373162`
+
+**Tagging-strategi:** 
+1. Jeg valgte å sette `latest` som alltid peker på den nyeste versjonen av docker imaget. Dette gjør det lettere å alltid hente sin siste versjon.
+2. Jeg har brukt teknikken med `sha-<git-commit>` hvor hver versjon får en unik tag basert på git commit SHA. 
+Dette gjør det svært enklere å finne sitt image senere for debugging eller rollback
+
+**Container Image navn**: 
+ - DockerHub repository: `https://hub.docker.com/repository/docker/hammerstad783/sentiment-docker/general`
+ - latest: `hammerstad783/sentiment-docker:latest`
+ - Tagged: `hammerstad783/sentiment-docker:sha-97c9a58`
+
+**Beskrivelse for sensor:**
+1. Fork repositoriet til din egen GitHub konto
+2. Lag docker tokens hos hub.docker.com -> account -> settings -> Personal access tokens -> Generate new token
+3. Opprett github secrets for docker: DockerHub brukernavn: `DOCKER_USERNAME`, DockerHub passord: `DOCKER_TOKEN` 
+4. Hvis ønskelig, oppdater image-navnet i fila `.github/workflows/docker-build-yml`
+5. Deretter push en endring til sentiment-docker, som vil da trigge workflow filen. 
+Workflow vil da begynne å bygge og publisere til din egen DockerHub konto
+
+# Oppgave 4 - Observabilitet, Metrikksamling og Overvåkningsinfrastruktur
+
+### Del A - Implementasjon av Custom Metrics
+
+### Leveranser
+
+
+### Del B - Infrastruktur for Visualisering og Alarmering
+
+### Leveranser
 
