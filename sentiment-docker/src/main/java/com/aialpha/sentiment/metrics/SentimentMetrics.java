@@ -18,7 +18,7 @@ public class SentimentMetrics {
 
         Gauge.builder("sentiment.companies.detected", companiesDetected, AtomicInteger::get)
                 .description("The number of companies that was detected in the last analysis")
-                .register(meterRegistry)
+                .register(meterRegistry);
 
         /**
          * Example implementation: Counter for sentiment analysis requests
@@ -53,7 +53,7 @@ public class SentimentMetrics {
     // This can go down and up over time, compared to counter
 
     public void recordCompaniesDetected(int count) {
-        companiesDetected.set(count)
+        companiesDetected.set(count);
     }
 
     public void recordConfidence(double confidence, String sentiment, String company) {
