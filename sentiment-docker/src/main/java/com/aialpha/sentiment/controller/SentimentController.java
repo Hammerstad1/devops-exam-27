@@ -1,11 +1,11 @@
 package com.aialpha.sentiment.controller;
 
+import com.aialpha.sentiment.metrics.SentimentMetrics;
 import com.aialpha.sentiment.model.AnalysisRequest;
 import com.aialpha.sentiment.model.CompanySentiment;
 import com.aialpha.sentiment.model.SentimentResult;
 import com.aialpha.sentiment.service.BedrockService;
 import com.aialpha.sentiment.service.S3StorageService;
-import com.aialpha.sentiment.metrics.SentimentMetrics;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

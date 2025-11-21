@@ -125,12 +125,117 @@ Workflow vil da begynne å bygge og publisere til din egen DockerHub konto
 
 # Oppgave 4 - Observabilitet, Metrikksamling og Overvåkningsinfrastruktur
 
-### Del A - Implementasjon av Custom Metrics
+## Del A - Implementasjon av Custom Metrics
 
-### Leveranser
+## Leveranser
+
+### Screenshot
+
+Timer:
+![img.png](img.png)
+
+Counter:
+![img_1.png](img_1.png)
+
+Gauge:
+![img_2.png](img_2.png)
+
+### Teknisk forklaring: 
+
+### Timer: `sentiment.bedrock.duration`
+jeg valgte bruk av timer, fordi den gir forskjellige nyttige informasjon for måling av latency og responstid for ekstre API-kall.
+Informasjon den samler inn er innenfor: `Count: antall API kall`, `Sum: totale tiden brukt`, 
+`Max: Lengste responstid`, `Average: Gjennomsnittlig respontid brukt` og `Persentiler: Som identifiserer ekstrem verdier`
+
+**Implementasjon**:
+![img_5.png](img_5.png)
+
+### Gauge: `sentiment.companies.detected`
+Gauge hjelper med å identifisere antall selskaper med current value i siste analyse. Gauge er perfekt for verdier som 
+kan gå opp og ned over en periode, i motsetning til Counter som bare er for økning, hjelper gauge å holde følge med på 
+verdier i sitt nåværende tilstand.
+
+**Implementasjon**: 
+![img_4.png](img_4.png)
+![img_3.png](img_3.png)
 
 
 ### Del B - Infrastruktur for Visualisering og Alarmering
 
 ### Leveranser
 
+Terraform-kode: Du finner min terraform kode i `infra-cloudwatch` mappen
+
+Dashboard Screenshot:
+
+
+Alarm Screenshot:
+![img_7.png](img_7.png)
+
+E-post Screenshot:
+![img_6.png](img_6.png)
+
+# Oppgave 5 - KI-assistert Systemutvikling og DevOps-prinsipper
+
+### Innledning
+Kunstig intelligens (KI) har gått fra å være noe som er eksperimentelt til å være noe som er integrert i hverdagen til utviklere. 
+Verktøyene GitHub Copilot, ChatGPT og Claude har evnen til å generere kode, foreslå løsninger, skrive tester og hjelpe med 
+infrastruktur og DevOps-lignende oppgaver. Denne utviklingen i KI har ført til en drastisk endring i hvordan vi programmerer, organiserer
+og gjennomfører DevOps-praksiser. I denne oppgaven skal jeg gå igjennom hvordan KI-assistenter påvirker de tre sentrale 
+DevOps-prinsippene: Flow, Feedback og kontinuerlig læring og forbedring. Denne drøftingen kommer til å bli bygd på generell teori
+og mine erfaringer fra eksamensoppgaven. 
+
+### Flow
+KI-verktøy kan ha en betydelig positiv effekt når det kommer til utviklingsflyt, hvor den mest åpenbare er 
+økt hastighet for utviklere. Her kan KI gi forslag til kode, generere boilerplate-kode, få hjelp med syntax og lage tester
+og dokumentasjon. Dette reduserer drastisk tiden utviklere trenger å bruke tiden sin på repeterende oppgaver og oppgaver med lav verdi.
+
+Men samtidig kan KI introdusere nye problemer som man ikke hadde før. Generert kode kan være feilaktig, ineffektiv eller bryte med
+kodemønstrene. Her flyttes arbeidet fra å skrive kode til å kvalitetssikre KI-koden. Hvis utviklerteamet blir alt for avhengig av 
+KI-verktøy, kan man møte problemet at man skriver kode som man ikke fullt forstår, som vil introdusere nye problemer i senere faser. 
+
+I DevOps-praksis skal det alltid være jevn flyt og stabilitet. Kode som er skrevet av KI kan styrke eller svekke dette.
+Hvis teamet holder gode standarder som automatisk testing og klare retningslinjer, kan KI bidra til raskere pull requests og kortere lead time.
+Hvis ikke, kan man risikere noe som "fake velocity", hvor man har høy produksjon av kode, men som må brukes masse tid på å omskrives i etterkant. 
+KI-generert kode påvirker også code review-prosessen direkte. Her må reviewere ofte være enda mer kritiske til kode som har blitt KI generert, noe som
+kan gjøre review-prosessen enda tyngre. KI-verktøyene er dermed ikke en garanti forbedring av flyt; effekten avhenger av hvor godt utviklingsprosessen er organisert. 
+
+### Feedback
+Feedback er en av de grunnpilarene i DevOps, og her endrer KI hvordan et team bør jobbe med tilbakemeldingsflyten. Når kode har blitt generert av KI,
+blir det enda viktigere for team å ha gode mekanismer for å validere kodekvalitet tidlig og kontinuerlig. Hvor dette gjelder særlig områder som automatisert testing, statisk analyse,
+sikkerhetsskanning, monitorering og metrikker.
+
+Dette kom også tydelig frem under eksamen, der jeg måtte bruke CloudWatch-metrikkene for å verifisere at systemet oppførte seg som forventet.
+Dette viser hvor viktig det er med raske og presise feedback-sløyfer er når man jobber med KI-relatert funksjonalitet
+
+En utfordring som tydelig kommer frem med KI-verktøy, er at de ofte kan fremstå som veldig overbevisende, men er ikke nødvendigvis korrekt. 
+Koden som KI produserer kan være syntaktisk riktig, men selve innholdet kan ha logiske feil og ineffektive mønstre. Dette øker behovet for raske feedback-sløyfer
+som fanger opp disse avvikene før de når produksjon. Her spiller automatiserte tester, integrasjonstester og ytelsesmålinger en sentral rolle.
+DevOps-team som allerede har integrert sterke pipelines vil lettere kunne integrere KI-verktøy uten at det reduserer kvaliteten. 
+
+På den positive siden kan KI også styrke feedback-loops, hvor KI-verktøy kan foreslå endringer og generere kode automatisk. 
+Dette kan gjøre feedbacken raskere og mer tilgjengelig, spesielt for utviklere med mindre erfaring. 
+
+
+### Kontinuerlig læring og forbedring
+Et av KI-ens sterkeste egenskaper er evnen til å søke etter hvilken som helst informasjon og deretter kunne bli stilt konkrete spørsmål om temaet.
+Dette har en stor påvirkning på læringskulturen og kompetanseutvikling. På en side så bidrar KI til å gjøre kunnskap enda mer tilgjengelig,
+hvor man kan raskt lære nye rammeverk, få forklaring på ukjent kode og få eksempler. Dette kan styrke læringen til utviklere 
+som er nysgjerrige. 
+
+På det negative aspektet kan overavhengighet av KI svekke sin dybdeforståelse. Hvis utviklere alltid får ferdig løsninger
+uten forståelse på koden, kan de i senere tid miste evnen til å kunne feilsøke komplekse problemer. I DevOps, hvor forståelse 
+for systemer er kritisk, kan dette være et problem. Derfor må organisasjoner legge til rette for 
+kunnskapsdeling ved parprogrammering og gjennomgang av KI-forslag. Slik læringen skjer i teamet, og ikke bare i individet. 
+
+KI-verktøyene introduserer nye ferdigheter som utviklere må lære. Utvikleren må kunne evaluere KI-forslagene på en 
+kritisk måte og klare å formulere gode prompter. Hvor dette er en ny kompetanse som stadig blir viktigere. 
+
+
+### Konklusjon
+
+KI-assistenter har en stor påvirkning på DevOps-prinsippene. KI-assistenter kan forbedre flyt gjennom økt effektivitet, 
+men kan også introdusere problemer hvis kvaliteten på generert kode er ustabil. Feedback blir stadig viktigere, 
+spesielt innenfor testautomatisering og observabilitet. Når det gjelder kontinuerlig læring, så er muligheten med KI enormt, 
+men kan også introdusere nye problemer hvis man bruker verktøyet ukritisk. 
+  
