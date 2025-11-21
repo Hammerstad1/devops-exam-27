@@ -94,6 +94,26 @@ Deretter merge til main, hvor workflowen blir deployet automatisk til AWS via `s
 
 ### Del A - Containeriser Spring Boot-applikasjonen
 
+Jeg har laget en Dockerfil i `sentiment-docker/Docker` Som bruker multi-stage build:
+Stage 1 (build): bygger med Maven + Anazib Coretto 21
+Stage 2 (runtime): Kjører Amazon Corretto 21 Alpine for minimal image-størrelse
+
+Applikasjonen bygges ved Spring Boot JAR-en og blir kjørt med: `ENTRYPOINT ["java", "-jar", "app.jar"]`
+
+Containeren eksponeres på port 8080
+
+Jeg bygde og kjørte imaget lokalt med kommandoen: 
+`docker build -t sentiment-docker .
+docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+  -e S3_BUCKET_NAME=<din bucket> \
+  -p 8080:8080 sentiment-docker`
+
+Deretter testet jeg API-et med:
+`curl -X POST http://localhost:8080/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"requestId": "test-123", "text": "NVIDIA soars while Intel struggles with declining sales"}'`
+
 ### Leveranser
 
 Docker fil: `sentiment-docker/Dockerfile`
@@ -132,13 +152,13 @@ Workflow vil da begynne å bygge og publisere til din egen DockerHub konto
 ### Screenshot
 
 Timer:
-![img.png](img.png)
+![img.png](media/img.png)
 
 Counter:
-![img_1.png](img_1.png)
+![img_1.png](media/img_1.png)
 
 Gauge:
-![img_2.png](img_2.png)
+![img_2.png](media/img_2.png)
 
 ### Teknisk forklaring: 
 
@@ -148,7 +168,7 @@ Informasjon den samler inn er innenfor: `Count: antall API kall`, `Sum: totale t
 `Max: Lengste responstid`, `Average: Gjennomsnittlig respontid brukt` og `Persentiler: Som identifiserer ekstrem verdier`
 
 **Implementasjon**:
-![img_5.png](img_5.png)
+![img_5.png](media/img_5.png)
 
 ### Gauge: `sentiment.companies.detected`
 Gauge hjelper med å identifisere antall selskaper med current value i siste analyse. Gauge er perfekt for verdier som 
@@ -156,8 +176,8 @@ kan gå opp og ned over en periode, i motsetning til Counter som bare er for øk
 verdier i sitt nåværende tilstand.
 
 **Implementasjon**: 
-![img_4.png](img_4.png)
-![img_3.png](img_3.png)
+![img_4.png](media/img_4.png)
+![img_3.png](media/img_3.png)
 
 
 ### Del B - Infrastruktur for Visualisering og Alarmering
@@ -167,13 +187,16 @@ verdier i sitt nåværende tilstand.
 Terraform-kode: Du finner min terraform kode i `infra-cloudwatch` mappen
 
 Dashboard Screenshot:
-
+![img_9.png](media/img_9.png)
 
 Alarm Screenshot:
-![img_7.png](img_7.png)
+![img_7.png](media/img_7.png)
 
 E-post Screenshot:
-![img_6.png](img_6.png)
+![img_6.png](media/img_6.png)
+
+varslingsystemet i epost:
+![img_8.png](media/img_8.png)
 
 # Oppgave 5 - KI-assistert Systemutvikling og DevOps-prinsipper
 

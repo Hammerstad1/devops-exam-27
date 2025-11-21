@@ -20,10 +20,7 @@ public class SentimentMetrics {
     public SentimentMetrics(MeterRegistry meterRegistry) {
         this.meterRegistry = meterRegistry;
 
-
-        Gauge.builder("sentiment.companies.detected", companiesDetected, AtomicInteger::get)
-                .description("The number of companies that was detected in the last analysis")
-                .register(meterRegistry);
+        meterRegistry.gauge("sentiment.companies.detected", companiesDetected);
 
         /**
          * Example implementation: Counter for sentiment analysis requests
